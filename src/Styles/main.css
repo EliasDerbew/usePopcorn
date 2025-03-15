@@ -1,0 +1,85 @@
+img {
+  width: 2rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  background-color: rgb(65, 65, 78);
+  margin: 20px;
+  border-radius: 0.5rem;
+  color: white;
+  max-width: 30rem;
+  min-width:27rem;
+  height: 85vh;
+  overflow: auto;
+}
+
+.box::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+}
+
+.box::-webkit-scrollbar-track {
+  background: rgb(65, 65, 78); /* Track background */
+}
+
+.box::-webkit-scrollbar-thumb {
+  background: #888; /* Scroll thumb color */
+  border-radius: 5px;
+}
+
+.box::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color on hover */
+}
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  gap: 10px;
+}
+
+ul li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px;
+  border-bottom: 1px solid rgb(88, 78, 78);
+  padding: 10px;
+}
+
+.btn-toggle {
+  border: none;
+  height: 20px;
+  width: 20px;
+  font-size: 18px;
+  background-color: rgb(58, 58, 193);
+  color: white;
+  border-radius: 50%;
+  align-self: end;
+  cursor: pointer;
+}
+
+.summary__header {
+    display: grid;
+    background-color: rgb(107, 91, 91);
+    padding: 10px;
+    border-radius: 0.5rem;
+}
+
+.m__info {
+    display: flex;
+    gap: 40px;
+}
+
+.movie-info {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+}

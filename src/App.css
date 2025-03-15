@@ -1,0 +1,96 @@
+.app {
+  font-family: "josefin Sans", sans-serif;
+  background-color: rgb(26, 25, 22);
+  min-height: 100vh;
+}
+
+.close--btn {
+  display: flex;
+  position: absolute;
+  top: 50px;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  background-color: rgb(208, 45, 118);
+  color: white;
+  font-weight: bold;
+}
+
+.detail__header {
+  display: flex;
+  gap: 30px;
+  background-color: rgba(0, 0, 255, 0.108);
+  padding: 5px;
+  border-radius: 0.5rem;
+}
+
+.poster {
+  width: 8rem;
+  height: 10rem;
+}
+
+.detail {
+  max-width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.rating {
+  padding: 10px;
+  margin: 0 20px;
+  border-radius: 0.5rem;
+  background-color: rgb(87, 72, 72);
+}
+
+.movie__discription {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.plot {
+  font-family: "josefin Sans", sans-serif;
+  font-weight: 200;
+  color: rgba(255, 255, 255, 0.672);
+}
+
+.actors {
+  font-weight: 300;
+}
+
+.side__movie__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 10px;
+}
+
+.side__movie__info p {
+  font-weight: 200;
+}
+
+.add__Movie__btn {
+  height: 40px;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  font-family: "josefin sans", sans-serif;
+  font-weight: 700;
+  color: white;
+  background-color: rgba(20, 20, 90, 0.755);
+  border: none;
+  border-radius: 5rem;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.295);
+}
+
+.add__Movie__btn:hover {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.337);
+}
+
+.add__Movie__btn:active {
+    box-shadow: 1px 1px 5px green;
+}
