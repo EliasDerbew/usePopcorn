@@ -1,6 +1,9 @@
 import "../Styles/main.css";
 import { useState } from "react";
 
+const average = (arr) =>
+  arr.reduce((acc, curr, i, arr) => acc + curr / arr.length, 0);
+
 export default function Main({ children }) {
   return <main className="main">{children}</main>;
 }
@@ -70,59 +73,81 @@ function Movie({ movie, onHandleSelection }) {
   );
 }
 
-export function WatchedSummary({ movies }) {
+export function WatchedSummary({ watched }) {
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgRuntime = average(watched.map((movie) => movie.runtime));
   return (
     <div className="summary__header">
       <h2>Movies you watched</h2>
       <div className="m__info">
         <p>
           <span>🛋 </span>
-          <span>{movies.length} movies</span>
+          <span>{avgImdbRating.length} movies</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{movies.imdbRating}</span>
+          <span>{avgUserRating.toFixed(2)}</span>
+        </p>
+        <p>
+          <span>⭐️</span>
+          <span>{avgImdbRating.toFixed(2)}</span>
         </p>
         <p>
           <span>⏰</span>
-          <span>{movies.runtime}</span>
+          <span>{avgRuntime} min</span>
         </p>
       </div>
     </div>
   );
 }
 
-export function WatchedMoviesList({ movies }) {
+export function WatchedMoviesList({ watched, onRemoveWatched }) {
   return (
     <ul>
-      {movies.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.imdbID} />
+      {watched.map((movie) => (
+        <WatchedMovie
+          movie={movie}
+          key={movie.imdbID}
+          onRemoveWatched={onRemoveWatched}
+        />
       ))}
     </ul>
   );
 }
 
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie, onRemoveWatched }) {
   return (
-    <li>
-      <img src={movie.poster} alt={`${movie.title}`} />
+    <li className="watched__list">
+      <div className="watched__info">
+        <img src={movie.poster} alt={`${movie.title}`} />
+
+        <div>
+          <h3>{movie.title}</h3>
+          <div className="movie-info">
+            <p>
+              <span>🌟</span>
+              <span>{movie.imdbRating}</span>
+            </p>
+            <p>
+              <span>🌟</span>
+              <span>{movie.userRating}</span>
+            </p>
+            <p>
+              <span>⏰</span>
+              <span>{movie.runtime} min</span>
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div>
-        <h3>{movie.title}</h3>
-        <div className="movie-info">
-          <p>
-            <span>🌟</span>
-            <span>{movie.imdbRating}</span>
-          </p>
-          <p>
-            <span>🌟</span>
-            <span>{movie.userRating}</span>
-          </p>
-          <p>
-            <span>⏰</span>
-            <span>{movie.runtime} min</span>
-          </p>
-        </div>
+        <button
+          className="remove__watched"
+          onClick={() => onRemoveWatched(movie.imdbID)}
+        >
+          &times;
+        </button>
       </div>
     </li>
   );

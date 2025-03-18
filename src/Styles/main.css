@@ -52,8 +52,37 @@ ul li {
   margin: 10px;
   border-bottom: 1px solid rgb(88, 78, 78);
   padding: 10px;
+  min-width: 100px;
 }
 
+.remove__watched {
+  padding: 0 4px;
+  border: none;
+  background-color: rgb(149, 121, 121);
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 50%; 
+}
+
+.remove__watched:hover {
+  background-color: rgb(216, 207, 207);
+}
+
+.remove__watched:active {
+  background-color: rgb(102, 96, 96);
+}
+
+.watched__list {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.watched__info {
+  display: flex;
+  gap: 10px;
+}
 .btn-toggle {
   border: none;
   height: 20px;
