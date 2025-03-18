@@ -14,7 +14,7 @@ const key = "ccbce268";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [quary, setQuary] = useState("inception");
+  const [quary, setQuary] = useState("");
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,12 +42,16 @@ export default function App() {
 
   useEffect(
     function () {
+      const controllar = new AbortController();
+
       async function MovieFetching() {
         try {
           setIsLoading(true);
           setError("");
+
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${key}&s=${quary}`
+            `http://www.omdbapi.com/?apikey=${key}&s=${quary}`,
+            { signal: controllar.signal }
           );
 
           if (!res.ok) throw new Error("something went wrong . . .");
@@ -57,11 +61,15 @@ export default function App() {
           if (data.Response === "False") throw new Error("Movies Not Found");
 
           setMovies(data.Search);
-          console.log(data.Search);
+          setError("");
 
           setIsLoading(false);
         } catch (err) {
           console.error(err.message);
+
+          if (err.name !== "AbortError") {
+            setError(err.message);
+          }
           setError(err.message);
         } finally {
           setIsLoading(false);
@@ -73,7 +81,13 @@ export default function App() {
         setError("");
         return;
       }
+
+      handlCloseSelection();
       MovieFetching();
+
+      return function () {
+        controllar.abort();
+      };
     },
     [quary]
   );
@@ -178,6 +192,41 @@ function MovieDetails({ selectedId, onCloseSelection, onAddWatched, watched }) {
     },
     [selectedId]
   );
+
+  //dynamic title
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+
+      // the clean up function
+      return function () {
+        document.title = "usePopcorn";
+      };
+    },
+    [title]
+  );
+
+  useEffect(
+    function () {
+      document.addEventListener("keydown", function (e) {
+        if (e.code === "Escape") {
+          onCloseSelection();
+        }
+      });
+
+      return function () {
+        document.removeEventListener("keydown", function (e) {
+          if (e.code === "Escape") {
+            onCloseSelection();
+          }
+        });
+      };
+    },
+    [onCloseSelection]
+  );
+
   return (
     <div className="detail">
       {isLoading ? (
