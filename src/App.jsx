@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Navbar, { Search, NumResult } from "./Components/Navbar";
 import StarRating from "./Components/StarRating";
 import Main, {
@@ -15,7 +15,11 @@ const key = "ccbce268";
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [quary, setQuary] = useState("");
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue);
+  });
+  // const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showMovies, setShowMovies] = useState(true);
@@ -38,7 +42,16 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
+
+    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   useEffect(
     function () {
@@ -143,6 +156,15 @@ function MovieDetails({ selectedId, onCloseSelection, onAddWatched, watched }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
 
+  const countRating = useRef(0);
+
+  useEffect(
+    function () {
+      if (userRating) countRating.current++;
+    },
+    [userRating]
+  );
+
   const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
   const watchedUserRating = watched.find(
     (movie) => movie.imdbID === selectedId
@@ -170,6 +192,7 @@ function MovieDetails({ selectedId, onCloseSelection, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      ratingDecision: countRating.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseSelection();
