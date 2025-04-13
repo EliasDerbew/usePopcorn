@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import Navbar, { Search, NumResult } from "./Components/Navbar";
 import StarRating from "./Components/StarRating";
+import { useMovies } from "./useMovies";
 import Main, {
   ListBox,
   WatchedBox,
@@ -10,20 +11,15 @@ import Main, {
 } from "./Components/Main";
 import "./App.css";
 
-const key = "ccbce268";
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
   const [quary, setQuary] = useState("");
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem("watched");
     return JSON.parse(storedValue);
   });
-  // const [watched, setWatched] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [showMovies, setShowMovies] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
+  const { movies, isLoading, error } = useMovies(quary);
 
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
@@ -51,58 +47,6 @@ export default function App() {
       localStorage.setItem("watched", JSON.stringify(watched));
     },
     [watched]
-  );
-
-  useEffect(
-    function () {
-      const controllar = new AbortController();
-
-      async function MovieFetching() {
-        try {
-          setIsLoading(true);
-          setError("");
-
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${key}&s=${quary}`,
-            { signal: controllar.signal }
-          );
-
-          if (!res.ok) throw new Error("something went wrong . . .");
-
-          const data = await res.json();
-
-          if (data.Response === "False") throw new Error("Movies Not Found");
-
-          setMovies(data.Search);
-          setError("");
-
-          setIsLoading(false);
-        } catch (err) {
-          console.error(err.message);
-
-          if (err.name !== "AbortError") {
-            setError(err.message);
-          }
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-
-      if (quary.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      }
-
-      handlCloseSelection();
-      MovieFetching();
-
-      return function () {
-        controllar.abort();
-      };
-    },
-    [quary]
   );
 
   return (
