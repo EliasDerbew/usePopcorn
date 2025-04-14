@@ -10,13 +10,16 @@ import Main, {
   WatchedMoviesList,
 } from "./Components/Main";
 import "./App.css";
+import { useLocalStorage } from "./useLocalStorage";
 
 export default function App() {
   const [quary, setQuary] = useState("");
-  const [watched, setWatched] = useState(function () {
-    const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
-  });
+  // const [watched, setWatched] = useState(function () {
+  //   const storedValue = localStorage.getItem("watched");
+  //   return JSON.parse(storedValue);
+  // });
+
+  const [watched, setWatched] = useLocalStorage([], "watched");
   const [showMovies, setShowMovies] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(quary);
@@ -42,12 +45,12 @@ export default function App() {
     // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
 
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
+  // useEffect(
+  //   function () {
+  //     localStorage.setItem("watched", JSON.stringify(watched));
+  //   },
+  //   [watched]
+  // );
 
   return (
     <div className="app">
